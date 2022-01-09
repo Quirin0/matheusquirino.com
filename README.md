@@ -25,3 +25,23 @@
 |       ✅        |   <img src="https://img.shields.io/github/forks/quirin0/matheusquirino.website?color=blueviolet&logo=forks&style=for-the-badge">        |
 
 </div>
+
+### Melhorias de desempenho
+
+##
+
+<div style="display:inline-block;">
+
+| Antes Mobile |  Antes PC         |
+| :-----------: | :--------------------------------: |
+| <img width="480" src="https://media.discordapp.net/attachments/570478999952687114/929830473453170758/antes-mobile.png"> | <img width="482" src="https://media.discordapp.net/attachments/570478999952687114/929830473771933726/antes-pc.png"> |
+
+</div>
+
+<div style="display:inline-block;">
+
+| Agora Mobile |  Agora PC         |
+| :-----------: | :--------------------------------: |
+| <img width="480" src="https://media.discordapp.net/attachments/570478999952687114/929830504029638776/now-mobile.png"> | <img width="482" src="https://media.discordapp.net/attachments/570478999952687114/929830503777988668/now-pc.png"> |
+  
+</div>
