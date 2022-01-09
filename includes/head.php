@@ -33,11 +33,6 @@
 
 <!-- Styles -->
 <link rel="stylesheet" type="text/css" href="assets/styles/style.css"/>
-<link rel="stylesheet" type="text/css" href="assets/demo/style-demo.css"/>
-
-<!-- Mapbox-->
-<script src='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.js'></script>
-<link href='https://api.mapbox.com/mapbox-gl-js/v1.4.1/mapbox-gl.css' rel='stylesheet' />
 
 <!-- Fontawesome Icons-->
 <script src="https://kit.fontawesome.com/faa9bc7328.js" crossorigin="anonymous"></script>

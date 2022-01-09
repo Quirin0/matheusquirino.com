@@ -124,12 +124,7 @@ require_once "includes/config.php";
 	<script src="assets/js/jquery-3.4.1.min.js"></script>
 	<script src="assets/js/plugins.min.js"></script>
     <script src="assets/js/common.js"></script>
- 
-    
-	<!-- Mapbox init -->
-	<script src="assets/js/mapbox.init.js"></script>
-	
-	<script src="assets/demo/plugins-demo.js"></script>
+
 </body>
 </html>
 <? 

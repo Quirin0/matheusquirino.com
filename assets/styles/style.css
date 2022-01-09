@@ -637,31 +637,10 @@ select option,
 }
 .bar {
     
-  background: -webkit-linear-gradient(
-      left,
-      #304CFD 30%,
-      #6075ff 80%,
-      #304CFD 100%
-  ) repeat;
+  background:#304CFD;
 
-  -webkit-background-size: 50% 1000000px;
-  -webkit-animation-name: moving-gradient;
-  -webkit-animation-duration: 3s;
-  -webkit-animation-iteration-count: infinite;
-  -webkit-animation-timing-function: linear;
 }
 
-
-@-webkit-keyframes moving-gradient {
-  0% {
-      background-position: left bottom;
-  }
-
-  100% {
-      background-position: right bottom;
-  }
-}​
-{}
 
 .progress {
   background-color: #F0F0F6;
