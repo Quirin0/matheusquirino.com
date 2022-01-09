@@ -3,40 +3,6 @@ session_start();
 setlocale (LC_ALL, 'pt_BR');
 date_default_timezone_set('America/Sao_Paulo');
 
-$conn = mysqli_connect("sql106.epizy.com", "epiz_29961272", "BudOD54dgxdP7", "epiz_29961272_projetos");
-//$conn = mysqli_connect("localhost", "root", "teteu123", "portfolio");
-
-
-// $google_site_key = "";
-// $google_secret_key = "";
-
-// $google_analytics = "UA-175441042-1";
-
-// $vb_nome_site = "Empório Serra à Vista"; 
-// $vb_descricao_site = "O melhor e mais cobiçado restaurante do país. Venha conferir!"; 
-// $vb_meta_site = "Empório Serra a Vista, restaurante, gourmet, café, café gourmet, restaurante serra, Serra a vista, comida, restaurante vale do paraíba";
-// $vb_autor_site = "Virtua Brasil"; 
-// $vb_sub_site = "Restaurante";
-// $vb_img_og = "/img/og.jpg";
-// $vb_endereco_fisico_site = "Rod. Floriano Rodrigues Pinheiro - 5190";
-// $vb_endereco_fisico_cidade_site = "Tremembé";
-// $vb_endereco_fisico_estado_site = "SP";
-// $vb_endereco_fisico_pais_site = "Brasil";
-// $vb_endereco_fisico_cep_site = "12120-000";
-// $vb_endereco_fisico_latitude_site = "";
-// $vb_endereco_fisico_longitude_site = "";
-// $vb_telefone_site = "";
-// $vb_whatsapp_site = "(12) 99658-3862";
-// $vb_whatsapp_url_site = "";
-// $vb_url_site = "https://www.emporioserraavista.com.br/novo";
-// $vb_email_site = "contato@emporioserraavista.com.br";
-// $vb_url_amigavel = "emporio-serra-a-vista";
-// $vb_facebook = "https://www.facebook.com/emporioserraavista/";
-// $vb_instagram = "https://www.instagram.com/emporioserraavista/";
-// $vb_twitter = "";
-// $vb_linkedin = "";
-// $vb_meu_negocio = "";
-
 function clean($string)
 {
     $table = array(
