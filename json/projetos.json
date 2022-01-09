@@ -1,0 +1,85 @@
+{
+"projetos":
+    [{
+        "nome":"Emp\u00f3rio Serra \u00e0 Vista",
+        "link":"https:\/\/www.emporioserraavista.com.br\/home",
+        "categoria":"html",
+        "descricao":"Projeto feito para um restaurante localizado próximo à Tremembé, Vale do paraíba, foi um projeto bem fácil. Criado inicialmente com <br>✅ HTML<br>✅ CSS<br>✅ PHP<br>✅ Javascript<br>✅ Bootstrap<br>✅ Htaccess<br> é um site sem sistema de login, porém tem um blog no qual o administrador do site pode adicionar novas matérias, além de possuir também programação htaccess, linguagem interpretada pelo navegador para segurança contra ataques SQL Injection... Outra particularidade do site é que possui um sistema de envio de email utilizando PHPMailer na página de Contato.",
+        "imagem":"assets/img/emporio-1.png",
+        "imagem1":"assets/img/emporio-2.png",
+        "imagem2":"assets/img/emporio-3.png"
+    },
+    {
+        "nome":"Mel e Favos Produtos Naturais",
+        "link":"https:\/\/www.melefavosprodutosnaturais.com.br",
+        "categoria":"html",
+        "descricao":"Site Landing Page, feito somente com: <br>✅ HTML,<br>✅ CSS<br>✅ PHP (para envio de emails)<br>✅ Javascript<br>✅ Bootstrap<br>✅ Htaccess<br> foi construido e projetado pensando na melhor experiencia do usuário, por isso foi utilizado também Bootstrap, para melhor responsividade da aplicação em diferentes navegadores, além de possuir também programação htaccess, linguagem interpretada pelo navegador para segurança contra ataques SQL Injection...",
+        "imagem":"assets/img/melefavos-1.png",
+        "imagem1":"assets/img/melefavos-2.png",
+        "imagem2":"assets/img/melefavos-3.png"
+    },
+    {
+        "nome":"Copy Coutinho",
+        "link":"https:\/\/www.copycoutinho.com",
+        "categoria":"html",
+        "descricao":"Website Landing Page, feito para uma empresa de impressões profissionais localizada em Taubaté, foi utilizado as seguintes linguagens: <br>✅ HTML<br>✅ CSS<br>✅ Javascript<br>✅ Bootstrap<br>✅Htaccess<br> além de possuir também programação htaccess, linguagem interpretada pelo navegador para segurança contra ataques SQL Injection...",
+        "imagem":"assets/img/copycoutinho-1.png",
+        "imagem1":"assets/img/copycoutinho-2.png",
+        "imagem2":"assets/img/copycoutinho-3.png"
+    },
+    {
+        "nome":"Canto da Terra - Chalita",
+        "link":".\/projetos\/cantodaterra\/",
+        "categoria":"php",
+        "descricao":"Esse foi meu primeiro projeto e também meu TCC (Trabalho de Conclusão de Curso), é um site One Page, desenvolvido para um salão de festas localizado em Cachoeira Paulista, inicialmente possuía banco de dados no qual o usuário, podia criar sua conta e agendar uma data no salão, mas o site foi removido do ar, pois seu dono não continuou a hospedagem... Site desenvolvido com as linguagens:<br>✅ HTML<br>✅ CSS<br>✅ PHP<br>✅ Javascript<br>✅ Bootstrap",
+        "imagem":"assets/img/cantodaterra-1.png",
+        "imagem1":"assets/img/cantodaterra-2.png",
+        "imagem2":"assets/img/cantodaterra-3.png"
+    },
+    {
+        "nome":"Sistema Help Desk com PHP",
+        "link":".\/projetos\/help-desk\/htaccess\/app_help_desk",
+        "categoria":"php",
+        "descricao":"Pequeno projeto de um curso, no qual é mais focado em PHP, nesse projeto é possível logar com um usuário já pré-definido e cadastrar chamados de orçamento. O Administrador consegue ver todos os pedidos, já o usuario comum consegue ver apenas os pedidos feitos por ele mesmo.",
+        "imagem":"assets/img/helpdesk-1.png",
+        "imagem1":"assets/img/helpdesk-2.png",
+        "imagem2":"assets/img/helpdesk-3.png"
+    },
+    {
+        "nome":"Jogo mata-mosquito",
+        "link":".\/projetos\/mata-mosquito\/",
+        "categoria":"javascript",
+        "descricao":"Jogo simples desenvolvido durante um curso de Javascript que eu fiz, nesse jogo eu aprendi técnicas de loop entres outras coisas... é possível escolher entre modos de jogo e se divertir bastante!",
+        "imagem":"assets/img/matamosquito-1.png",
+        "imagem1":"assets/img/matamosquito-2.png",
+        "imagem2":"assets/img/matamosquito-3.png"
+    },
+    {
+        "nome":"Omegle Bot",
+        "link":"https://github.com/Quirin0/omeglebot",
+        "categoria":"javascript",
+        "descricao":"Esse é um bot simples para enviar mensagens no omegle e em seguida pular para outra conversa...<br>Você pode se perguntar para que isso serve, então irei explicar... O Omegle é um chat de conversa com pessoas anônimas em tempo real, o bot pode servir como uma ótima ferramenta de divulgação.<br><br>Foi divertido elaborar esse pequeno projeto pois pude aprender mais sobre arrays e loops.<br>Para mais informações sobre o Bot é só clicar em <b>Visitar</b>.",
+        "imagem":"https://media.discordapp.net/attachments/570478999952687114/929477540614144030/only-removebg-preview_1.png",
+        "imagem1":"assets/img/matamosquito-2.png",
+        "imagem2":"assets/img/matamosquito-3.png"
+    },
+    {
+        "nome":"Facebook Bot",
+        "link":"https://github.com/Quirin0/facebook-bot",
+        "categoria":"nodejs",
+        "descricao":"Esse é um bot simples para realizar postagens no facebook.<br>Foi um dos primeiros projetos que realizei com NodeJS... O bot pode servir como uma ótima ferramenta de postagem de frases simultâneas.<br><br>Foi divertido elaborar esse pequeno projeto pois pude aprender mais sobre bibliotecas NodeJS, arrays e loops.<br>Para mais informações sobre o Bot é só clicar em <b>Visitar</b>.",
+        "imagem":"https://media.discordapp.net/attachments/570478999952687114/929486707026456586/only__1_-removebg-preview.png",
+        "imagem1":"assets/img/matamosquito-2.png",
+        "imagem2":"assets/img/matamosquito-3.png"
+    },
+    {
+        "nome":"Whatsppp Bot",
+        "link":"https://github.com/Quirin0/near-bot2.0",
+        "categoria":"nodejs",
+        "descricao":"<p>Bot completo para whatsapp, com esse bot &eacute; possivel criar figurinhas, baixar videos do youtube, enviar transmiss&otilde;es, criar grupos e tudo mais... &eacute; um bot complexo, e melhorado por mim.</p><h2>Features</h2><table><thead><tr><th>NEW</th><th>NEW Features by Near</th></tr></thead><tbody><tr><td>✅</td><td>Get List of all members</td></tr><tr><td>✅</td><td>Animated sticker to GIF</td></tr><tr><td>✅</td><td>Makes a list of all members of a group</td></tr><tr><td>✅</td><td>Add in your group all members of the list created</td></tr><tr><td>✅</td><td>Archive any group by removing one by one</td></tr><tr><td>✅</td><td>Crash/Travar @memberGroup</td></tr></tbody></table><p>&nbsp;</p><table><thead><tr><th>Sticker</th><th>Feature</th></tr></thead><tbody><tr><td>✅</td><td>Photo to Sticker</td></tr><tr><td>✅</td><td>GIF to Sticker</td></tr><tr><td>✅</td><td>Video to Sticker</td></tr><tr><td>✅</td><td>Sticker to Image</td></tr></tbody></table><p>&nbsp;</p><table><thead><tr><th>Other</th><th>Feature</th></tr></thead><tbody><tr><td>✅</td><td>Get a random loli</td></tr><tr><td>✅</td><td>Text to speech</td></tr><tr><td>✅</td><td>Writing feature</td></tr><tr><td>✅</td><td>What Anime Is This</td></tr><tr><td>✅</td><td>Search image</td></tr><tr><td>✅</td><td>Simsimi</td></tr></tbody></table><p>&nbsp;</p><table><thead><tr><th>Group</th><th>Feature</th></tr></thead><tbody><tr><td>✅</td><td>Tag all/Mention all members</td></tr><tr><td>✅</td><td>Tag all 2/Mention all members</td></tr><tr><td>✅</td><td>Tag all 3/Mention all members</td></tr><tr><td>✅</td><td>Kick Member Group</td></tr><tr><td>✅</td><td>Add Member Group</td></tr><tr><td>✅</td><td>Promote Member Group</td></tr><tr><td>✅</td><td>Demote Member Group</td></tr><tr><td>✅</td><td>Get List Admins Group</td></tr><tr><td>✅</td><td>Get Group Invite Link</td></tr><tr><td>✅</td><td>Bot leave the group</td></tr></tbody></table><p>&nbsp;</p><table><thead><tr><th>Owner</th><th>Feature</th></tr></thead><tbody><tr><td>✅</td><td>Set Prefix</td></tr><tr><td>✅</td><td>Broadcast</td></tr><tr><td>✅</td><td>Clear All Chats</td></tr></tbody></table>",
+        "imagem":"https://media.discordapp.net/attachments/570478999952687114/929496281636823080/only__3_-removebg-preview_1.png",
+        "imagem1":"assets/img/matamosquito-2.png",
+        "imagem2":"assets/img/matamosquito-3.png"
+    }
+]
+}

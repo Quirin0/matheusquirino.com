@@ -1,0 +1,7 @@
+# dev directories
+copia-html/
+old/
+
+# un-used files / future update
+about.php
+blog.php
