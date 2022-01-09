@@ -18,5 +18,10 @@
 ```bash
   > git clone https://github.com/Quirin0/matheusquirino.website
 ```
+<div align="center">
 
-Ou faça um fork!  <img src="https://img.shields.io/github/forks/quirin0/matheusquirino.website?color=blueviolet&logo=forks&style=for-the-badge">
+| FORK IT |  GIVE A STAR           |
+| :-----------: | :--------------------------------: |
+|       ✅        |   <img src="https://img.shields.io/github/forks/quirin0/matheusquirino.website?color=blueviolet&logo=forks&style=for-the-badge">        |
+
+</div>
