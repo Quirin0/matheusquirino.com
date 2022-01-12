@@ -45,3 +45,4 @@
 | <img width="480" src="https://media.discordapp.net/attachments/570478999952687114/929830504029638776/now-mobile.png"> | <img width="482" src="https://media.discordapp.net/attachments/570478999952687114/929830503777988668/now-pc.png"> |
   
 </div>
+<p>Sinta-se a vontade para fazer um fork e criar o seu próprio portfólio!</p>
