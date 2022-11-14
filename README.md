@@ -16,7 +16,7 @@
 ### Clone o projeto
 
 ```bash
-  > git clone https://github.com/Quirin0/matheusquirino.website
+  > git clone https://github.com/Quirin0/matheusquirino.com
 ```
 <div align="center">
 
