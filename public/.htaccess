@@ -1,0 +1,48 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+    RewriteEngine On
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Handle X-XSRF-Token Header
+    RewriteCond %{HTTP:x-xsrf-token} .
+    RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
+
+    # Redirect root to Next.js frontend
+    RewriteRule ^$ /frontend [L,R=302]
+
+    # Serve Next.js static frontend files directly (bypass Laravel)
+    RewriteCond %{REQUEST_URI} ^/frontend
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^ - [L]
+
+    # For Next.js routes without extension, try index.html inside frontend folder
+    RewriteCond %{REQUEST_URI} ^/frontend
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}/index.html -f
+    RewriteRule ^(.*)$ $1/index.html [L]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Assets do Next.js sem prefixo /frontend (imagens, ícones, etc.)
+    # Se o arquivo não existe no caminho original mas existe em /frontend/
+    RewriteCond %{REQUEST_URI} !^/frontend
+    RewriteCond %{REQUEST_URI} !^/api
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{DOCUMENT_ROOT}/frontend%{REQUEST_URI} -f
+    RewriteRule ^(.*)$ frontend/$1 [L]
+
+    # Send API and Laravel Requests To Front Controller...
+    RewriteCond %{REQUEST_URI} !^/frontend
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
