@@ -4,14 +4,11 @@ import { useEffect, useMemo, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ArrowLeft, ExternalLink, Github, ZoomIn, ZoomOut } from "lucide-react"
+import { ArrowLeft, ExternalLink, Github, ZoomIn } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Navbar } from "@/components/navbar"
@@ -84,7 +81,7 @@ export default function ProjectDetailClient({
   const [project, setProject] = useState(initialProject)
   const [otherProjects, setOtherProjects] = useState(initialOthers)
   const [coverOpen, setCoverOpen] = useState(false)
-  const [coverZoom, setCoverZoom] = useState(1)
+  const [coverZoomed, setCoverZoomed] = useState(false)
 
   useEffect(() => {
     let cancelled = false
@@ -137,84 +134,41 @@ export default function ProjectDetailClient({
         open={coverOpen}
         onOpenChange={(open) => {
           setCoverOpen(open)
-          if (!open) setCoverZoom(1)
+          if (!open) setCoverZoomed(false)
         }}
       >
         <DialogContent
           showCloseButton
-          className="max-h-[92vh] w-[min(96vw,1100px)] max-w-[min(96vw,1100px)] translate-x-[-50%] translate-y-[-50%] gap-3 border-border bg-card p-3 sm:p-4 sm:max-w-[min(96vw,1100px)]"
+          className="fixed inset-0 z-50 flex h-dvh max-h-dvh w-full max-w-none translate-x-0 translate-y-0 flex-col gap-0 rounded-none border-0 bg-black p-0 shadow-none duration-200 data-[state=closed]:zoom-out-100 data-[state=open]:zoom-in-100 sm:max-w-none [&_[data-slot=dialog-close]]:top-3 [&_[data-slot=dialog-close]]:right-3 [&_[data-slot=dialog-close]]:text-white [&_[data-slot=dialog-close]]:opacity-90 hover:[&_[data-slot=dialog-close]]:opacity-100"
         >
-          <DialogHeader className="sr-only">
-            <DialogTitle>Imagem — {project.title}</DialogTitle>
-            <DialogDescription>
-              Use os botões ou a roda do rato sobre a imagem para aproximar ou afastar.
-            </DialogDescription>
-          </DialogHeader>
+          <DialogTitle className="sr-only">Imagem em tela cheia — {project.title}</DialogTitle>
           <div
-            className="relative max-h-[min(78vh,800px)] min-h-[200px] overflow-auto rounded-lg bg-black/30 outline-none"
-            tabIndex={-1}
-            onWheel={(e) => {
-              e.preventDefault()
-              setCoverZoom((z) =>
-                Math.min(4, Math.max(1, z - e.deltaY * 0.0015))
-              )
-            }}
+            className="flex min-h-0 flex-1 items-center justify-center overflow-auto p-3"
+            onClick={() => setCoverOpen(false)}
+            role="presentation"
           >
-            <div
-              className="inline-block origin-top-left p-4"
-              style={{
-                transform: `scale(${coverZoom})`,
-                transition: "transform 0.12s ease-out",
+            <button
+              type="button"
+              className="relative max-h-full max-w-full shrink-0 border-0 bg-transparent p-0 outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+              style={{ cursor: coverZoomed ? "zoom-out" : "zoom-in" }}
+              onClick={(e) => {
+                e.stopPropagation()
+                setCoverZoomed((z) => !z)
               }}
+              aria-label={coverZoomed ? "Reduzir imagem" : "Ampliar imagem"}
             >
               <img
                 src={project.coverImage}
                 alt=""
-                className="max-h-[70vh] w-auto max-w-[85vw] rounded-md object-contain shadow-lg select-none sm:max-w-[90vw]"
+                className="max-h-[calc(100dvh-3rem)] max-w-[calc(100vw-1.5rem)] object-contain select-none transition-transform duration-200 ease-out"
+                style={{
+                  transform: coverZoomed ? "scale(2.25)" : "scale(1)",
+                  transformOrigin: "center center",
+                }}
                 draggable={false}
               />
-            </div>
+            </button>
           </div>
-          <DialogFooter className="flex flex-row flex-wrap items-center justify-between gap-2 border-t border-border pt-3 sm:justify-between">
-            <p className="text-xs text-muted-foreground">
-              Roda do rato na área da imagem: zoom · arraste as barras de rolagem quando ampliado
-            </p>
-            <div className="flex gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                size="icon"
-                className="h-9 w-9 shrink-0"
-                aria-label="Diminuir zoom"
-                onClick={() =>
-                  setCoverZoom((z) => Math.max(1, Math.round((z - 0.25) * 100) / 100))
-                }
-              >
-                <ZoomOut className="h-4 w-4" />
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="icon"
-                className="h-9 w-9 shrink-0"
-                aria-label="Aumentar zoom"
-                onClick={() =>
-                  setCoverZoom((z) => Math.min(4, Math.round((z + 0.25) * 100) / 100))
-                }
-              >
-                <ZoomIn className="h-4 w-4" />
-              </Button>
-              <Button
-                type="button"
-                variant="secondary"
-                size="sm"
-                className="shrink-0"
-                onClick={() => setCoverZoom(1)}
-              >
-                Reset
-              </Button>
-            </div>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
 
@@ -237,7 +191,7 @@ export default function ProjectDetailClient({
                 type="button"
                 className="group relative mb-8 aspect-video w-full cursor-zoom-in overflow-hidden rounded-2xl border border-border bg-card text-left ring-offset-background transition-shadow hover:ring-2 hover:ring-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 onClick={() => {
-                  setCoverZoom(1)
+                  setCoverZoomed(false)
                   setCoverOpen(true)
                 }}
                 aria-label={`Abrir imagem de ${project.title} em tela cheia com zoom`}
@@ -259,9 +213,9 @@ export default function ProjectDetailClient({
 
               <div className="mb-6">
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tags.map((tag) => (
+                  {project.tags.map((tag, ti) => (
                     <span
-                      key={tag}
+                      key={`${project.slug}-tag-${ti}-${tag}`}
                       className="px-3 py-1 bg-primary/10 text-primary text-xs rounded-full"
                     >
                       {tag}

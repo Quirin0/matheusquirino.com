@@ -175,9 +175,9 @@ export default function ProjectsPage() {
                       </p>
 
                       <div className="flex flex-wrap gap-1.5">
-                        {project.tags.slice(0, 3).map((tag) => (
+                        {project.tags.map((tag, ti) => (
                           <span
-                            key={tag}
+                            key={`${project.slug}-${ti}-${tag}`}
                             className={`px-2 py-0.5 text-[10px] rounded-full ${
                               selectedTags.includes(tag)
                                 ? "bg-primary/20 text-primary"
