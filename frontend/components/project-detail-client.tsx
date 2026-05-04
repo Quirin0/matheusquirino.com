@@ -4,8 +4,16 @@ import { useEffect, useMemo, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { ArrowLeft, ExternalLink, Github } from "lucide-react"
+import { ArrowLeft, ExternalLink, Github, ZoomIn, ZoomOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { Navbar } from "@/components/navbar"
 import { ContactSection } from "@/components/contact-section"
 import { Footer } from "@/components/footer"
@@ -16,6 +24,15 @@ import {
   PROJECT_CATCH_SHELL_SLUG,
   type ApiProjectJson,
 } from "@/lib/projects-api"
+
+/** Há conteúdo real na descrição longa (texto ou mídia embutida). */
+function hasLongDescription(body: string): boolean {
+  const raw = body.trim()
+  if (!raw) return false
+  if (/<(img|video|iframe|figure|picture)\b/i.test(raw)) return true
+  const textOnly = raw.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim()
+  return textOnly.length > 0
+}
 
 function ProjectDescription({ body }: { body: string }) {
   const trimmed = body.trim()
@@ -66,6 +83,8 @@ export default function ProjectDetailClient({
 
   const [project, setProject] = useState(initialProject)
   const [otherProjects, setOtherProjects] = useState(initialOthers)
+  const [coverOpen, setCoverOpen] = useState(false)
+  const [coverZoom, setCoverZoom] = useState(1)
 
   useEffect(() => {
     let cancelled = false
@@ -108,9 +127,96 @@ export default function ProjectDetailClient({
     }
   }, [effectiveSlug])
 
+  const showLongDescription = hasLongDescription(project.fullDescription)
+
   return (
     <main className="min-h-screen bg-background">
       <Navbar />
+
+      <Dialog
+        open={coverOpen}
+        onOpenChange={(open) => {
+          setCoverOpen(open)
+          if (!open) setCoverZoom(1)
+        }}
+      >
+        <DialogContent
+          showCloseButton
+          className="max-h-[92vh] w-[min(96vw,1100px)] max-w-[min(96vw,1100px)] translate-x-[-50%] translate-y-[-50%] gap-3 border-border bg-card p-3 sm:p-4 sm:max-w-[min(96vw,1100px)]"
+        >
+          <DialogHeader className="sr-only">
+            <DialogTitle>Imagem — {project.title}</DialogTitle>
+            <DialogDescription>
+              Use os botões ou a roda do rato sobre a imagem para aproximar ou afastar.
+            </DialogDescription>
+          </DialogHeader>
+          <div
+            className="relative max-h-[min(78vh,800px)] min-h-[200px] overflow-auto rounded-lg bg-black/30 outline-none"
+            tabIndex={-1}
+            onWheel={(e) => {
+              e.preventDefault()
+              setCoverZoom((z) =>
+                Math.min(4, Math.max(1, z - e.deltaY * 0.0015))
+              )
+            }}
+          >
+            <div
+              className="inline-block origin-top-left p-4"
+              style={{
+                transform: `scale(${coverZoom})`,
+                transition: "transform 0.12s ease-out",
+              }}
+            >
+              <img
+                src={project.coverImage}
+                alt=""
+                className="max-h-[70vh] w-auto max-w-[85vw] rounded-md object-contain shadow-lg select-none sm:max-w-[90vw]"
+                draggable={false}
+              />
+            </div>
+          </div>
+          <DialogFooter className="flex flex-row flex-wrap items-center justify-between gap-2 border-t border-border pt-3 sm:justify-between">
+            <p className="text-xs text-muted-foreground">
+              Roda do rato na área da imagem: zoom · arraste as barras de rolagem quando ampliado
+            </p>
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                className="h-9 w-9 shrink-0"
+                aria-label="Diminuir zoom"
+                onClick={() =>
+                  setCoverZoom((z) => Math.max(1, Math.round((z - 0.25) * 100) / 100))
+                }
+              >
+                <ZoomOut className="h-4 w-4" />
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                className="h-9 w-9 shrink-0"
+                aria-label="Aumentar zoom"
+                onClick={() =>
+                  setCoverZoom((z) => Math.min(4, Math.round((z + 0.25) * 100) / 100))
+                }
+              >
+                <ZoomIn className="h-4 w-4" />
+              </Button>
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                className="shrink-0"
+                onClick={() => setCoverZoom(1)}
+              >
+                Reset
+              </Button>
+            </div>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       <article className="pt-24 pb-16">
         <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-12">
@@ -127,16 +233,29 @@ export default function ProjectDetailClient({
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
-              <div className="relative aspect-video bg-card rounded-2xl overflow-hidden border border-border mb-8">
+              <button
+                type="button"
+                className="group relative mb-8 aspect-video w-full cursor-zoom-in overflow-hidden rounded-2xl border border-border bg-card text-left ring-offset-background transition-shadow hover:ring-2 hover:ring-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                onClick={() => {
+                  setCoverZoom(1)
+                  setCoverOpen(true)
+                }}
+                aria-label={`Abrir imagem de ${project.title} em tela cheia com zoom`}
+              >
                 <Image
                   src={project.coverImage}
                   alt={project.title}
                   fill
-                  className="object-cover"
+                  className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
                   sizes="(max-width: 1024px) 100vw, 66vw"
                   priority
                 />
-              </div>
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-card/90 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                <span className="pointer-events-none absolute bottom-3 left-3 flex items-center gap-2 rounded-full bg-background/80 px-3 py-1.5 text-xs font-medium text-foreground opacity-0 shadow-sm backdrop-blur-sm transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+                  <ZoomIn className="h-3.5 w-3.5 text-primary" />
+                  Ampliar
+                </span>
+              </button>
 
               <div className="mb-6">
                 <div className="flex flex-wrap gap-2 mb-4">
@@ -196,11 +315,13 @@ export default function ProjectDetailClient({
                 )}
               </div>
 
-              <div className="prose prose-invert max-w-none">
-                <div className="bg-card rounded-xl border border-border p-6 md:p-8">
-                  <ProjectDescription body={project.fullDescription} />
+              {showLongDescription ? (
+                <div className="prose prose-invert max-w-none">
+                  <div className="bg-card rounded-xl border border-border p-6 md:p-8">
+                    <ProjectDescription body={project.fullDescription} />
+                  </div>
                 </div>
-              </div>
+              ) : null}
             </div>
 
             <aside className="lg:col-span-1">
