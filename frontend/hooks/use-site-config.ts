@@ -16,6 +16,7 @@ export interface SiteConfig {
 const defaultConfig: SiteConfig = {
   settings: {
     "site.logo_text": "<MatheusQuirino />",
+    "site.logo_image": "/images/1632870446247.jpeg",
     "site.hero_name": "Hello World_",
     "site.hero_title": "Desenvolvedor\nFullstack Junior",
     "site.hero_description":

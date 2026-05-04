@@ -4,6 +4,7 @@ import Image from "next/image"
 import { Github, Linkedin, Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useSiteConfig } from "@/hooks/use-site-config"
+import { useTypewriter } from "@/hooks/use-typewriter"
 
 export function HeroSection() {
   const config = useSiteConfig()
@@ -14,12 +15,16 @@ export function HeroSection() {
   const heroDescription = s["site.hero_description"]  || "Apaixonado por criar soluções web modernas e eficientes."
   const githubUrl       = s["social.github"]           || "https://github.com"
   const linkedinUrl     = s["social.linkedin"]         || "https://linkedin.com"
-  const profilePhoto    = s["site.profile_photo"]      || "/images/1632870446247.jpeg"
+  const profilePhoto    = s["site.profile_photo"]      || "/placeholder-user.jpg"
+
+  const fullText = heroName.endsWith("_") ? heroName.slice(0, -1) : heroName
+  const { displayed, cursorVisible, triggerRef } = useTypewriter(fullText, { speed: 90, keepCursor: true })
 
   const [titleLine1, titleLine2] = heroTitle.split("\n")
 
   return (
     <section
+      ref={triggerRef}
       id="inicio"
       className="min-h-screen flex items-center pt-20 md:pt-0"
     >
@@ -48,7 +53,8 @@ export function HeroSection() {
           <div className="text-center lg:text-left flex-1">
             <div className="space-y-5">
               <span className="inline-block px-4 py-1.5 text-xs font-mono bg-card border border-border rounded-full text-muted-foreground animate-in fade-in slide-in-from-bottom-4 duration-500">
-                {heroName}
+                {displayed}
+                <span style={{ opacity: cursorVisible ? 1 : 0 }}>_</span>
               </span>
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight animate-in fade-in slide-in-from-bottom-4 duration-500 delay-100">
                 <span className="text-balance">{titleLine1}</span>
@@ -68,7 +74,7 @@ export function HeroSection() {
                 <Button
                   variant="outline"
                   size="icon"
-                  className="rounded-full border-border hover:border-primary hover:bg-primary/10 transition-all duration-300 bg-transparent h-9 w-9 text-foreground"
+                  className="rounded-full border-border hover:border-primary hover:bg-primary/10 transition-all duration-300 bg-transparent h-9 w-9 text-foreground animate-pulse-subtle"
                   asChild
                 >
                   <a href={githubUrl} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
@@ -78,7 +84,7 @@ export function HeroSection() {
                 <Button
                   variant="outline"
                   size="icon"
-                  className="rounded-full border-border hover:border-primary hover:bg-primary/10 transition-all duration-300 bg-transparent h-9 w-9 text-foreground"
+                  className="rounded-full border-border hover:border-primary hover:bg-primary/10 transition-all duration-300 bg-transparent h-9 w-9 text-foreground animate-pulse-subtle"
                   asChild
                 >
                   <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
@@ -88,7 +94,7 @@ export function HeroSection() {
                 <Button
                   variant="outline"
                   size="icon"
-                  className="rounded-full border-border hover:border-primary hover:bg-primary/10 transition-all duration-300 bg-transparent h-9 w-9 text-foreground"
+                  className="rounded-full border-border hover:border-primary hover:bg-primary/10 transition-all duration-300 bg-transparent h-9 w-9 text-foreground animate-pulse-subtle"
                   asChild
                 >
                   <a href="#contato" aria-label="Email">

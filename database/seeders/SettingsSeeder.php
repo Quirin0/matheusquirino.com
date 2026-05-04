@@ -12,6 +12,7 @@ class SettingsSeeder extends Seeder
         $defaults = [
             // General / Site
             ['group' => 'general', 'key' => 'site.logo_text',        'value' => '<MatheusQuirino />'],
+            ['group' => 'general', 'key' => 'site.logo_image',       'value' => '/images/1632870446247.jpeg'],
             ['group' => 'general', 'key' => 'site.hero_name',        'value' => "Hello World_"],
             ['group' => 'general', 'key' => 'site.hero_title',       'value' => "Desenvolvedor\nFullstack Junior"],
             ['group' => 'general', 'key' => 'site.hero_description', 'value' => 'Apaixonado por criar soluções web modernas e eficientes. Especializado em PHP, Laravel, React e tecnologias que transformam ideias em realidade digital.'],

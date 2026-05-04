@@ -1,30 +1,36 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Image from "next/image"
+import { usePathname } from "next/navigation"
 import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useSiteConfig } from "@/hooks/use-site-config"
 
 const navItems = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Sobre Mim", href: "#sobre" },
-  { label: "Projetos", href: "#projetos" },
-  { label: "Contato", href: "#contato" },
+  { label: "Inicio",    hash: "inicio" },
+  { label: "Sobre Mim", hash: "sobre" },
+  { label: "Projetos",  hash: "projetos" },
+  { label: "Contato",   hash: "contato" },
 ]
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const config = useSiteConfig()
+  const pathname = usePathname()
+  const isHome   = pathname === "/" || pathname === ""
+  const config   = useSiteConfig()
   const logoText = config.settings["site.logo_text"] || "<MatheusQuirino />"
+  const logoSrc =
+    config.settings["site.logo_image"] || "/images/1632870446247.jpeg"
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
-    }
+    const handleScroll = () => setScrolled(window.scrollY > 20)
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  const href = (hash: string) => isHome ? `#${hash}` : `/#${hash}`
 
   return (
     <header
@@ -37,18 +43,27 @@ export function Navbar() {
       <div className="max-w-4xl mx-auto px-6 md:px-8 lg:px-12">
         <nav className="flex items-center justify-between h-14 md:h-16">
           <a
-            href="#inicio"
-            className="text-lg font-bold text-primary transition-colors hover:text-primary/80"
+            href={href("inicio")}
+            className="flex items-center gap-2.5 text-lg font-bold text-primary transition-colors hover:text-primary/80"
           >
-            {logoText}
+            <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-lg ring-1 ring-border bg-card">
+              <Image
+                src={logoSrc}
+                alt=""
+                width={36}
+                height={36}
+                className="h-full w-full object-cover"
+              />
+            </span>
+            <span className="leading-tight">{logoText}</span>
           </a>
 
           {/* Desktop Navigation */}
           <ul className="hidden md:flex items-center gap-6">
             {navItems.map((item) => (
-              <li key={item.href}>
+              <li key={item.hash}>
                 <a
-                  href={item.href}
+                  href={href(item.hash)}
                   className="text-muted-foreground hover:text-primary transition-colors duration-300 text-sm font-medium"
                 >
                   {item.label}
@@ -76,9 +91,9 @@ export function Navbar() {
         >
           <ul className="flex flex-col gap-3">
             {navItems.map((item) => (
-              <li key={item.href}>
+              <li key={item.hash}>
                 <a
-                  href={item.href}
+                  href={href(item.hash)}
                   onClick={() => setIsOpen(false)}
                   className="block text-muted-foreground hover:text-primary transition-colors duration-300 text-sm font-medium"
                 >
