@@ -15,7 +15,7 @@ export function HeroSection() {
   const heroDescription = s["site.hero_description"]  || "Apaixonado por criar soluções web modernas e eficientes."
   const githubUrl       = s["social.github"]           || "https://github.com"
   const linkedinUrl     = s["social.linkedin"]         || "https://linkedin.com"
-  const profilePhoto    = s["site.profile_photo"]      || "/placeholder-user.jpg"
+  const profilePhoto    = s["site.profile_photo"]      || "/images/1632870446247.jpeg"
 
   const fullText = heroName.endsWith("_") ? heroName.slice(0, -1) : heroName
   const { displayed, cursorVisible, triggerRef } = useTypewriter(fullText, { speed: 90, keepCursor: true })

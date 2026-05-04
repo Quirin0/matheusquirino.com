@@ -74,18 +74,15 @@ export default async function ProjectPage({
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Main Content */}
             <div className="lg:col-span-2">
-              {/* Logo do projeto (marca) */}
-              <div className="relative aspect-video rounded-2xl overflow-hidden border border-border mb-8 bg-gradient-to-br from-primary/20 via-secondary to-primary/5 flex items-center justify-center">
-                <div className="relative h-32 w-32 md:h-40 md:w-40 rounded-3xl overflow-hidden ring-4 ring-border shadow-2xl bg-card">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 128px, 160px"
-                    priority
-                  />
-                </div>
+              <div className="relative aspect-video bg-card rounded-2xl overflow-hidden border border-border mb-8">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 66vw"
+                  priority
+                />
               </div>
 
               {/* Project Title */}
