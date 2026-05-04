@@ -7,8 +7,9 @@ import {
   SiDocker, SiPhp, SiLaravel, SiMysql, SiJavascript, SiReact,
   SiHtml5, SiCss, SiTypescript, SiNodedotjs, SiGit, SiTailwindcss,
   SiGitlab, SiGithubactions, SiPython, SiNextdotjs, SiPostgresql, SiSqlite,
+  SiRedis, SiLinux, SiOpenai, SiAngular,
 } from "react-icons/si"
-import { Cloud, X } from "lucide-react"
+import { Cloud, X, Server } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import type { IconType } from "react-icons"
 import type { LucideIcon } from "lucide-react"
@@ -39,7 +40,15 @@ const iconMap: Record<string, AnyIcon> = {
   "gitlab":      SiGitlab,
   "ci-cd":       SiGithubactions,
   "cicd":        SiGithubactions,
+  "linux":       SiLinux,
+  "scrum":       Cloud,
+  "redis":       SiRedis,
+  "angular":     SiAngular,
   "aws":         Cloud,
+  "azure":       Cloud,
+  "openai":      SiOpenai,
+  "n8n":         Server,
+  "vps":         Server,
 }
 
 // Mapa slug → descrição
@@ -66,7 +75,15 @@ const descriptionMap: Record<string, string> = {
   "gitlab":      "Plataforma completa de versionamento, CI/CD e colaboração em projetos.",
   "ci-cd":       "Automação de integração e entrega contínua para deploys rápidos e confiáveis.",
   "cicd":        "Automação de integração e entrega contínua para deploys rápidos e confiáveis.",
+  "linux":       "Sistema operacional open-source base para servidores, contêineres e ambientes de produção.",
+  "scrum":       "Metodologia ágil para gestão e planejamento de projetos de desenvolvimento de software.",
+  "redis":       "Banco de dados em memória de alta performance, usado para cache e filas de mensagens.",
+  "angular":     "Framework TypeScript do Google para construção de aplicações web robustas e escaláveis.",
   "aws":         "Plataforma de computação em nuvem da Amazon com serviços de infraestrutura global.",
+  "azure":       "Plataforma de nuvem da Microsoft com serviços para hospedagem, IA e DevOps.",
+  "openai":      "APIs de inteligência artificial da OpenAI, incluindo GPT, para automação e geração de conteúdo.",
+  "n8n":         "Plataforma de automação de fluxos de trabalho no-code/low-code com integrações diversas.",
+  "vps":         "Servidor privado virtual para hospedagem e deploy de aplicações com controle total.",
 }
 
 // Mapa categoria backend → label exibida

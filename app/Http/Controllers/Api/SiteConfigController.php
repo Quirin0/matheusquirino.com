@@ -15,6 +15,7 @@ class SiteConfigController extends Controller
         'seo.og_image',
         'seo.twitter_image',
         'site.profile_photo',
+        'resume.cv_file',
     ];
 
     public function index(): JsonResponse
@@ -29,6 +30,11 @@ class SiteConfigController extends Controller
                     ? Storage::disk('public')->url($settings[$key])
                     : null;
             }
+        }
+
+        // Fallback para o CV estático se não houver upload configurado
+        if (empty($settings['resume.cv_file'])) {
+            $settings['resume.cv_file'] = '/cv/curriculo.pdf';
         }
 
         return response()->json([

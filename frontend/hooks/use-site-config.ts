@@ -38,6 +38,66 @@ const defaultConfig: SiteConfig = {
     "seo.home_keywords": "",
     "seo.google_analytics": "",
     "seo.google_tag_manager": "",
+    "resume.personal_statement":
+      "Atuo com desenvolvimento de software desde 2018, participando da criação e manutenção de aplicações web que recebem centenas de acessos diariamente. Possuo experiência em ambientes colaborativos, desenvolvimento fullstack e backend, com foco em código limpo, performance e boas práticas.",
+    "resume.cv_file": "/cv/curriculo.pdf",
+    "resume.differentials": JSON.stringify([
+      { text: "Construção de projetos completos (frontend + backend + deploy)" },
+      { text: "Integração com APIs externas e automações (ex: pagamentos, scraping, IA)" },
+      { text: "Noções de infraestrutura (VPS, Docker, CI/CD)" },
+    ]),
+    "resume.experiences": JSON.stringify([
+      {
+        role: "Programador Fullstack Júnior",
+        company: "Virtua Brasil",
+        type: "Presencial",
+        period: "Outubro 2020 – Janeiro 2021",
+        color: "#a78bfa",
+        tags: "HTML, CSS, PHP, JavaScript, MySQL",
+        highlights: [
+          { text: "Atuei em conjunto com uma equipe de desenvolvedores no desenvolvimento de websites e sistemas web, utilizando HTML, CSS, PHP, JavaScript e MySQL." },
+          { text: "Desenvolvi sistemas administrativos voltados ao gerenciamento e manipulação de dados em banco de dados." },
+          { text: "Criei soluções de design responsivo, garantindo melhor experiência do usuário (UX) em diferentes dispositivos." },
+        ],
+      },
+      {
+        role: "Programador Backend Júnior",
+        company: "Uappi",
+        type: "Remoto",
+        period: "Março 2022 – Junho 2024",
+        color: "#61DAFB",
+        tags: "Docker, Laravel, React, Angular, Git, CI/CD, Scrum",
+        highlights: [
+          { text: "Atuei no desenvolvimento e manutenção de sites de grandes empresas, como Growth Supplements, Daikin, Desinchá, Leveros, entre outras." },
+          { text: "Trabalhei com tecnologias e frameworks modernos, incluindo Docker, Laravel, React, Angular, HeidiSQL, Git e GitHub." },
+          { text: "Desenvolvi habilidades de trabalho em equipe, seguindo metodologias ágeis como Scrum, além de práticas de CI/CD para integração e entrega contínua." },
+        ],
+      },
+    ]),
+    "resume.education": JSON.stringify([
+      {
+        degree: "Técnico em Informática para Internet",
+        institution: "ETEC Dr. Geraldo José Rodrigues Alckmin",
+        period: "2018 – 2019",
+        status: "Concluído",
+        color: "#a78bfa",
+        description: "Formação técnica com foco em desenvolvimento web, lógica de programação, banco de dados e infraestrutura de redes. Base que impulsionou minha entrada no mercado de tecnologia.",
+      },
+      {
+        degree: "Engenharia de Software",
+        institution: "UniCesumar",
+        period: "2026 – 2030",
+        status: "Em andamento · EAD",
+        color: "#61DAFB",
+        description: "Graduação em Engenharia de Software com foco em fundamentos de engenharia, arquitetura de sistemas, qualidade de software e gestão de projetos tecnológicos.",
+      },
+    ]),
+    "resume.stats": JSON.stringify([
+      { value: "7+",   label: "Anos de experiência" },
+      { value: "2",    label: "Empresas atuadas" },
+      { value: "50+",  label: "Projetos entregues" },
+      { value: "2018", label: "Início na área" },
+    ]),
   },
   stacks: [],
 }

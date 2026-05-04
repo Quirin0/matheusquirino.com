@@ -36,9 +36,21 @@ class StackSeeder extends Seeder
             ['name' => 'Git',         'category' => 'devops',   'color' => '#F05032', 'order' => 16],
             ['name' => 'GitLab',      'category' => 'devops',   'color' => '#FC6D26', 'order' => 17],
             ['name' => 'CI/CD',       'category' => 'devops',   'color' => '#2088FF', 'order' => 18],
+            ['name' => 'Linux',       'category' => 'devops',   'color' => '#FCC624', 'order' => 19],
+            ['name' => 'Scrum',       'category' => 'devops',   'color' => '#6DB33F', 'order' => 20],
+
+            // ── Banco de Dados (extra) ────────────────────────────
+            ['name' => 'Redis',       'category' => 'database', 'color' => '#DC382D', 'order' => 21],
+
+            // ── Frontend (extra) ──────────────────────────────────
+            ['name' => 'Angular',     'category' => 'frontend', 'color' => '#DD0031', 'order' => 22],
 
             // ── Cloud / Outros ────────────────────────────────────
-            ['name' => 'AWS',         'category' => 'other',    'color' => '#FF9900', 'order' => 19],
+            ['name' => 'AWS',         'category' => 'other',    'color' => '#FF9900', 'order' => 23],
+            ['name' => 'Azure',       'category' => 'other',    'color' => '#0078D4', 'order' => 24],
+            ['name' => 'OpenAI',      'category' => 'other',    'color' => '#10a37f', 'order' => 25],
+            ['name' => 'N8N',         'category' => 'other',    'color' => '#EA4B71', 'order' => 26],
+            ['name' => 'VPS',         'category' => 'other',    'color' => '#6366f1', 'order' => 27],
         ];
 
         foreach ($stacks as $stack) {

@@ -8,10 +8,11 @@ import { Button } from "@/components/ui/button"
 import { useSiteConfig } from "@/hooks/use-site-config"
 
 const navItems = [
-  { label: "Inicio",    hash: "inicio" },
-  { label: "Sobre Mim", hash: "sobre" },
-  { label: "Projetos",  hash: "projetos" },
-  { label: "Contato",   hash: "contato" },
+  { label: "Inicio",      hash: "inicio" },
+  { label: "Sobre Mim",   hash: "sobre" },
+  { label: "Experiência", hash: "experiencia" },
+  { label: "Projetos",    hash: "projetos" },
+  { label: "Contato",     hash: "contato" },
 ]
 
 export function Navbar() {

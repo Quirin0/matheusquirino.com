@@ -35,7 +35,7 @@ class Setting extends Model
 
     public static function getAllPublic(): array
     {
-        return static::whereIn('group', ['general', 'contact', 'colors', 'seo', 'social'])
+        return static::whereIn('group', ['general', 'contact', 'colors', 'seo', 'social', 'resume'])
             ->pluck('value', 'key')
             ->toArray();
     }
