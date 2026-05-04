@@ -13,36 +13,27 @@
     RewriteCond %{HTTP:x-xsrf-token} .
     RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
 
-    # Home = SPA Next (sem redirect externo — evita URLs estranhas / encadeamento com rewrite da raiz)
-    RewriteRule ^$ frontend/index.html [L]
+    # API e Sanctum → Laravel
+    RewriteCond %{REQUEST_URI} ^/api [NC,OR]
+    RewriteCond %{REQUEST_URI} ^/sanctum [NC]
+    RewriteRule ^ index.php [L]
 
-    # Serve Next.js static frontend files directly (bypass Laravel)
-    RewriteCond %{REQUEST_URI} ^/frontend
+    # Arquivo físico existente
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^ - [L]
 
-    # For Next.js routes without extension, try index.html inside frontend folder
-    RewriteCond %{REQUEST_URI} ^/frontend
+    # Diretório físico existente
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Export Next: .../rota/index.html
     RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}/index.html -f
     RewriteRule ^(.*)$ $1/index.html [L]
 
-    # Redirect Trailing Slashes If Not A Folder...
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} (.+)/$
-    RewriteRule ^ %1 [L,R=301]
-
-    # Assets do Next.js sem prefixo /frontend (imagens, ícones, etc.)
-    # Se o arquivo não existe no caminho original mas existe em /frontend/
-    RewriteCond %{REQUEST_URI} !^/frontend
-    RewriteCond %{REQUEST_URI} !^/api
+    # Demais rotas → Laravel (Filament, storage link, etc.)
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{DOCUMENT_ROOT}/frontend%{REQUEST_URI} -f
-    RewriteRule ^(.*)$ frontend/$1 [L]
-
-    # Send API and Laravel Requests To Front Controller...
-    RewriteCond %{REQUEST_URI} !^/frontend
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>

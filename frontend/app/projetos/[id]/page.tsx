@@ -8,15 +8,42 @@ import { ContactSection } from "@/components/contact-section"
 import { Footer } from "@/components/footer"
 import { WhatsAppButton } from "@/components/whatsapp-button"
 import {
-  projects,
-  getProjectById,
-  getOtherProjects,
-} from "@/lib/projects-data"
+  fetchProjectAtBuild,
+  fetchProjectsAtBuild,
+  fetchProjectSlugsAtBuild,
+  fallbackProjectBySlug,
+} from "@/lib/projects-api"
 
-export function generateStaticParams() {
-  return projects.map((project) => ({
-    id: project.id,
-  }))
+function ProjectDescription({ body }: { body: string }) {
+  const trimmed = body.trim()
+  const looksHtml = /<[a-z][\s\S]*>/i.test(trimmed)
+
+  if (looksHtml) {
+    return (
+      <div
+        className="prose prose-invert prose-sm md:prose-base max-w-none text-muted-foreground [&_a]:text-primary [&_img]:rounded-lg"
+        dangerouslySetInnerHTML={{ __html: trimmed }}
+      />
+    )
+  }
+
+  return (
+    <>
+      {trimmed.split("\n\n").map((paragraph, index) => (
+        <p
+          key={index}
+          className="text-muted-foreground leading-relaxed mb-4 last:mb-0"
+        >
+          {paragraph}
+        </p>
+      ))}
+    </>
+  )
+}
+
+export async function generateStaticParams() {
+  const slugs = await fetchProjectSlugsAtBuild()
+  return slugs.map((id) => ({ id }))
 }
 
 export async function generateMetadata({
@@ -25,7 +52,8 @@ export async function generateMetadata({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const project = getProjectById(id)
+  const project =
+    (await fetchProjectAtBuild(id)) ?? fallbackProjectBySlug(id)
 
   if (!project) {
     return {
@@ -45,13 +73,15 @@ export default async function ProjectPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const project = getProjectById(id)
+  const project =
+    (await fetchProjectAtBuild(id)) ?? fallbackProjectBySlug(id)
 
   if (!project) {
     notFound()
   }
 
-  const otherProjects = getOtherProjects(id)
+  const allProjects = await fetchProjectsAtBuild()
+  const otherProjects = allProjects.filter((p) => p.slug !== project.slug)
 
   return (
     <main className="min-h-screen bg-background">
@@ -59,7 +89,6 @@ export default async function ProjectPage({
 
       <article className="pt-24 pb-16">
         <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-12">
-          {/* Back Button */}
           <Link href="/#projetos">
             <Button
               variant="ghost"
@@ -72,11 +101,10 @@ export default async function ProjectPage({
           </Link>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main Content */}
             <div className="lg:col-span-2">
               <div className="relative aspect-video bg-card rounded-2xl overflow-hidden border border-border mb-8">
                 <Image
-                  src={project.image}
+                  src={project.coverImage}
                   alt={project.title}
                   fill
                   className="object-cover"
@@ -85,7 +113,6 @@ export default async function ProjectPage({
                 />
               </div>
 
-              {/* Project Title */}
               <div className="mb-6">
                 <div className="flex flex-wrap gap-2 mb-4">
                   {project.tags.map((tag) => (
@@ -105,22 +132,13 @@ export default async function ProjectPage({
                 </p>
               </div>
 
-              {/* Project Description */}
               <div className="prose prose-invert max-w-none">
                 <div className="bg-card rounded-xl border border-border p-6 md:p-8">
-                  {project.fullDescription.split("\n\n").map((paragraph, index) => (
-                    <p
-                      key={index}
-                      className="text-muted-foreground leading-relaxed mb-4 last:mb-0"
-                    >
-                      {paragraph}
-                    </p>
-                  ))}
+                  <ProjectDescription body={project.fullDescription} />
                 </div>
               </div>
             </div>
 
-            {/* Sidebar - Other Projects */}
             <aside className="lg:col-span-1">
               <div className="sticky top-24">
                 <h3 className="text-lg font-semibold text-foreground mb-4">
@@ -129,21 +147,19 @@ export default async function ProjectPage({
                 <div className="space-y-4" style={{ display: "inline-grid" }}>
                   {otherProjects.map((otherProject) => (
                     <Link
-                      key={otherProject.id}
-                      href={`/projetos/${otherProject.id}`}
+                      key={otherProject.slug}
+                      href={`/projetos/${otherProject.slug}`}
                     >
                       <div className="group flex gap-4 px-4 py-5 bg-card rounded-xl border border-border hover:border-primary/40 transition-all duration-300 cursor-pointer">
-                        {/* Mini Image */}
                         <div className="relative w-16 h-16 flex-shrink-0 bg-secondary rounded-lg overflow-hidden self-center">
                           <Image
-                            src={otherProject.image}
+                            src={otherProject.coverImage}
                             alt={otherProject.title}
                             fill
                             className="object-cover"
                             sizes="64px"
                           />
                         </div>
-                        {/* Info */}
                         <div className="flex-1 min-w-0 flex flex-col justify-center gap-1.5">
                           <h4 className="text-sm font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1">
                             {otherProject.title}

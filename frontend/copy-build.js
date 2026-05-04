@@ -2,7 +2,7 @@ const fs = require("fs")
 const path = require("path")
 
 const src = path.join(__dirname, "out")
-const dest = path.join(__dirname, "..", "public", "frontend")
+const destRoot = path.join(__dirname, "..", "public")
 
 function copyRecursive(srcDir, destDir) {
   if (!fs.existsSync(destDir)) {
@@ -29,10 +29,21 @@ function deleteRecursive(dir) {
   }
 }
 
-console.log(`Limpando ${dest}...`)
-deleteRecursive(dest)
+const dirsToClear = ["_next", "projetos", "frontend", "_not-found"]
+const rootFilesToClear = ["index.html", "404.html", "_not-found.html"]
 
-console.log(`Copiando ${src} → ${dest}...`)
-copyRecursive(src, dest)
+console.log("Removendo artefatos antigos do Next em public/...")
+for (const name of dirsToClear) {
+  deleteRecursive(path.join(destRoot, name))
+}
+for (const name of rootFilesToClear) {
+  const p = path.join(destRoot, name)
+  if (fs.existsSync(p)) {
+    fs.rmSync(p, { recursive: true, force: true })
+  }
+}
 
-console.log("Build copiado com sucesso para public/frontend!")
+console.log(`Copiando ${src} → ${destRoot}...`)
+copyRecursive(src, destRoot)
+
+console.log("Build estático copiado para public/ (URLs sem /frontend).")

@@ -6,12 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
     public function index(): JsonResponse
     {
-        $projects = Project::orderBy('order')->orderBy('created_at', 'desc')->get();
+        $projects = Project::orderBy('order')->orderBy('created_at', 'desc')->get()
+            ->map(fn (Project $p) => $this->serializeProject($p))
+            ->values();
 
         return response()->json($projects);
     }
@@ -34,12 +37,33 @@ class ProjectController extends Controller
 
         $project = Project::create($validated);
 
-        return response()->json($project, 201);
+        return response()->json($this->serializeProject($project), 201);
     }
 
     public function show(Project $project): JsonResponse
     {
-        return response()->json($project);
+        return response()->json($this->serializeProject($project));
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function serializeProject(Project $project): array
+    {
+        $data = $project->toArray();
+        $img  = $data['image_url'] ?? null;
+
+        if (! empty($img) && is_string($img)) {
+            if (! str_starts_with($img, 'http://') && ! str_starts_with($img, 'https://')) {
+                if (str_starts_with($img, '/')) {
+                    // Caminho já público (legado / CDN)
+                } else {
+                    $data['image_url'] = Storage::disk('public')->url($img);
+                }
+            }
+        }
+
+        return $data;
     }
 
     public function update(Request $request, Project $project): JsonResponse
@@ -60,7 +84,7 @@ class ProjectController extends Controller
 
         $project->update($validated);
 
-        return response()->json($project);
+        return response()->json($this->serializeProject($project->fresh()));
     }
 
     public function destroy(Project $project): JsonResponse

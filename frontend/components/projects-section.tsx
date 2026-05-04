@@ -3,15 +3,16 @@
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { useEffect, useRef, useState } from "react"
-import { projects, type Project } from "@/lib/projects-data"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { useProjects } from "@/hooks/use-projects"
+import type { PortfolioProject } from "@/lib/project-types"
 import { useTypewriter } from "@/hooks/use-typewriter"
 
 function ProjectCard({
   project,
   index,
 }: {
-  project: Project
+  project: PortfolioProject
   index: number
 }) {
   const [isVisible, setIsVisible] = useState(false)
@@ -36,7 +37,7 @@ function ProjectCard({
   }, [])
 
   return (
-    <Link href={`/projetos/${project.id}`}>
+    <Link href={`/projetos/${project.slug}`}>
       <div
         ref={ref}
         className={`group bg-card border border-border rounded-xl overflow-hidden transition-all duration-500 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 cursor-pointer ${
@@ -49,7 +50,7 @@ function ProjectCard({
           style={{ height: "calc(var(--spacing) * 60)" }}
         >
           <Image
-            src={project.image}
+            src={project.coverImage}
             alt={project.title}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
@@ -64,7 +65,7 @@ function ProjectCard({
               {project.title}
             </h3>
           </div>
-          
+
           <p className="text-muted-foreground text-xs leading-relaxed mb-3 line-clamp-2">
             {project.description}
           </p>
@@ -87,13 +88,23 @@ function ProjectCard({
 
 export function ProjectsSection() {
   const { displayed, cursorVisible, triggerRef } = useTypewriter("<Projetos />")
+  const { projects, loading } = useProjects()
+
+  const homeProjects = useMemo(() => {
+    if (!projects.length) return []
+    const sorted = [...projects].sort((a, b) => a.order - b.order)
+    const feat = sorted.filter((p) => p.featured)
+    const source = feat.length ? feat : sorted
+    return source.slice(0, 4)
+  }, [projects])
 
   return (
     <section ref={triggerRef} id="projetos" className="py-16 md:py-24">
       <div className="max-w-4xl mx-auto px-6 md:px-8 lg:px-12">
         <div className="text-center mb-10">
           <span className="inline-block px-4 py-1.5 mb-4 text-xs font-mono bg-card border border-border rounded-full text-muted-foreground">
-            {displayed}<span style={{ opacity: cursorVisible ? 1 : 0 }}>_</span>
+            {displayed}
+            <span style={{ opacity: cursorVisible ? 1 : 0 }}>_</span>
           </span>
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
             Projetos em <span className="text-primary">Destaque</span>
@@ -104,9 +115,30 @@ export function ProjectsSection() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {projects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
+          {loading
+            ? Array.from({ length: 4 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="rounded-xl border border-border overflow-hidden bg-card animate-pulse"
+                >
+                  <div
+                    className="bg-muted"
+                    style={{ height: "calc(var(--spacing) * 60)" }}
+                  />
+                  <div className="p-4 space-y-2">
+                    <div className="h-4 bg-muted rounded w-3/4" />
+                    <div className="h-3 bg-muted rounded w-full" />
+                    <div className="h-3 bg-muted rounded w-1/2" />
+                  </div>
+                </div>
+              ))
+            : homeProjects.map((project, index) => (
+                <ProjectCard
+                  key={project.slug}
+                  project={project}
+                  index={index}
+                />
+              ))}
         </div>
 
         <div className="flex justify-center mt-8">

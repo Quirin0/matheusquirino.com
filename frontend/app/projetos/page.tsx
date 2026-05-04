@@ -10,13 +10,15 @@ import { Navbar } from "@/components/navbar"
 import { ContactSection } from "@/components/contact-section"
 import { Footer } from "@/components/footer"
 import { WhatsAppButton } from "@/components/whatsapp-button"
-import { projects, getAllTags } from "@/lib/projects-data"
-
+import { useProjects } from "@/hooks/use-projects"
+import { collectTags } from "@/lib/projects-api"
 
 export default function ProjectsPage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedTags, setSelectedTags] = useState<string[]>([])
-  const allTags = getAllTags()
+  const { projects, loading } = useProjects()
+
+  const allTags = useMemo(() => collectTags(projects), [projects])
 
   const filteredProjects = useMemo(() => {
     return projects.filter((project) => {
@@ -31,7 +33,7 @@ export default function ProjectsPage() {
 
       return matchesSearch && matchesTags
     })
-  }, [searchQuery, selectedTags])
+  }, [projects, searchQuery, selectedTags])
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
@@ -50,7 +52,6 @@ export default function ProjectsPage() {
 
       <section className="pt-28 pb-16 md:pt-32 md:pb-20">
         <div className="max-w-4xl mx-auto px-6 md:px-8 lg:px-12">
-          {/* Header */}
           <div className="text-center mb-10">
             <span className="inline-block px-4 py-1.5 mb-4 text-xs font-mono bg-card border border-border rounded-full text-muted-foreground">
               {"<TodosProjetos />"}
@@ -64,9 +65,7 @@ export default function ProjectsPage() {
             </p>
           </div>
 
-          {/* Search and Filters */}
           <div className="mb-8 space-y-4">
-            {/* Search Input */}
             <div className="relative">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <input
@@ -87,7 +86,6 @@ export default function ProjectsPage() {
               )}
             </div>
 
-            {/* Tags Filter */}
             <div className="flex flex-wrap gap-2">
               {allTags.map((tag) => (
                 <button
@@ -115,19 +113,38 @@ export default function ProjectsPage() {
             </div>
           </div>
 
-          {/* Results Count */}
           <p className="text-sm text-muted-foreground mb-6">
-            {filteredProjects.length}{" "}
-            {filteredProjects.length === 1
-              ? "projeto encontrado"
-              : "projetos encontrados"}
+            {loading
+              ? "Carregando..."
+              : `${filteredProjects.length} ${
+                  filteredProjects.length === 1
+                    ? "projeto encontrado"
+                    : "projetos encontrados"
+                }`}
           </p>
 
-          {/* Projects Grid */}
-          {filteredProjects.length > 0 ? (
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="rounded-xl border border-border overflow-hidden bg-card animate-pulse"
+                >
+                  <div
+                    className="bg-muted"
+                    style={{ height: "calc(var(--spacing) * 60)" }}
+                  />
+                  <div className="p-4 space-y-2">
+                    <div className="h-4 bg-muted rounded w-3/4" />
+                    <div className="h-3 bg-muted rounded w-full" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : filteredProjects.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {filteredProjects.map((project, index) => (
-                <Link key={project.id} href={`/projetos/${project.id}`}>
+                <Link key={project.slug} href={`/projetos/${project.slug}`}>
                   <div
                     className="group bg-card border border-border rounded-xl overflow-hidden transition-all duration-500 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 cursor-pointer animate-in fade-in slide-in-from-bottom-4"
                     style={{ animationDelay: `${index * 50}ms` }}
@@ -137,7 +154,7 @@ export default function ProjectsPage() {
                       style={{ height: "calc(var(--spacing) * 60)" }}
                     >
                       <Image
-                        src={project.image}
+                        src={project.coverImage}
                         alt={project.title}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
@@ -191,7 +208,6 @@ export default function ProjectsPage() {
             </div>
           )}
 
-          {/* Back Button */}
           <div className="flex justify-center mt-10">
             <Button
               variant="outline"

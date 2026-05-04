@@ -40,7 +40,7 @@ class SettingsSeeder extends Seeder
             ['group' => 'seo', 'key' => 'seo.home_title',       'value' => 'Matheus Quirino — Desenvolvedor Fullstack'],
             ['group' => 'seo', 'key' => 'seo.home_description', 'value' => 'Portfólio de Matheus Quirino, desenvolvedor fullstack especializado em PHP, Laravel e React.'],
             ['group' => 'seo', 'key' => 'seo.home_keywords',    'value' => 'desenvolvedor, fullstack, PHP, Laravel, React, portfólio'],
-            ['group' => 'seo', 'key' => 'seo.og_image',         'value' => '/frontend/icon.svg'],
+            ['group' => 'seo', 'key' => 'seo.og_image',         'value' => '/icon.svg'],
             ['group' => 'seo', 'key' => 'seo.robots',           'value' => 'index, follow'],
 
             // SMTP
