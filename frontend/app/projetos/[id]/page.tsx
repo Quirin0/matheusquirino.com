@@ -5,7 +5,9 @@ import {
   fetchProjectsAtBuild,
   fetchProjectSlugsAtBuild,
   fallbackProjectBySlug,
+  PROJECT_CATCH_SHELL_SLUG,
 } from "@/lib/projects-api"
+import { FALLBACK_PROJECT_LIST } from "@/lib/projects-fallback"
 
 export async function generateStaticParams() {
   const slugs = await fetchProjectSlugsAtBuild()
@@ -18,6 +20,12 @@ export async function generateMetadata({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
+  if (id === PROJECT_CATCH_SHELL_SLUG) {
+    return {
+      title: "Projeto | Matheus Quirino",
+      description: "Detalhes do projeto.",
+    }
+  }
   const project =
     (await fetchProjectAtBuild(id)) ?? fallbackProjectBySlug(id)
 
@@ -39,6 +47,21 @@ export default async function ProjectPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
+
+  if (id === PROJECT_CATCH_SHELL_SLUG) {
+    const placeholder = FALLBACK_PROJECT_LIST[0]
+    const initialOthers = (await fetchProjectsAtBuild()).filter(
+      (p) => p.slug !== placeholder.slug
+    )
+    return (
+      <ProjectDetailClient
+        slug={PROJECT_CATCH_SHELL_SLUG}
+        initialProject={placeholder}
+        initialOthers={initialOthers}
+      />
+    )
+  }
+
   const initial =
     (await fetchProjectAtBuild(id)) ?? fallbackProjectBySlug(id)
 

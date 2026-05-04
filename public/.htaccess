@@ -22,6 +22,13 @@
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^ - [L]
 
+    # /rota/ com barra final → rota.html quando existir (evita 403: pasta sem index)
+    RewriteCond %{REQUEST_URI} !^/api [NC]
+    RewriteCond %{REQUEST_URI} !^/sanctum [NC]
+    RewriteCond %{REQUEST_URI} ^/(.+)/$
+    RewriteCond %{DOCUMENT_ROOT}/%1.html -f
+    RewriteRule ^ /%1.html [L]
+
     # Next export: /rota → rota.html (ANTES de tratar /rota como pasta — evita 403 em /projetos)
     RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}.html -f
     RewriteRule ^ %{REQUEST_URI}.html [L]

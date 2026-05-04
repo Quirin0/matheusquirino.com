@@ -1,8 +1,9 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { ArrowLeft, ExternalLink, Github } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Navbar } from "@/components/navbar"
@@ -12,6 +13,7 @@ import { WhatsAppButton } from "@/components/whatsapp-button"
 import type { PortfolioProject } from "@/lib/project-types"
 import {
   mapApiProjectToPortfolio,
+  PROJECT_CATCH_SHELL_SLUG,
   type ApiProjectJson,
 } from "@/lib/projects-api"
 
@@ -51,6 +53,17 @@ export default function ProjectDetailClient({
   initialProject: PortfolioProject
   initialOthers: PortfolioProject[]
 }) {
+  const pathname = usePathname() || ""
+  const effectiveSlug = useMemo(() => {
+    const parts = pathname.split("/").filter(Boolean)
+    if (parts[0] !== "projetos" || parts.length < 2) return slug
+    const fromUrl = parts[1]
+    if (slug === PROJECT_CATCH_SHELL_SLUG && fromUrl !== PROJECT_CATCH_SHELL_SLUG) {
+      return fromUrl
+    }
+    return fromUrl || slug
+  }, [pathname, slug])
+
   const [project, setProject] = useState(initialProject)
   const [otherProjects, setOtherProjects] = useState(initialOthers)
 
@@ -61,7 +74,9 @@ export default function ProjectDetailClient({
     const load = async () => {
       try {
         const [oneRes, allRes] = await Promise.all([
-          fetch(`${origin}/api/projects/${encodeURIComponent(slug)}`),
+          fetch(
+            `${origin}/api/projects/${encodeURIComponent(effectiveSlug)}`
+          ),
           fetch(`${origin}/api/projects`),
         ])
 
@@ -78,7 +93,7 @@ export default function ProjectDetailClient({
             setOtherProjects(
               rawList
                 .map(mapApiProjectToPortfolio)
-                .filter((p) => p.slug !== slug)
+                .filter((p) => p.slug !== effectiveSlug)
             )
           }
         }
@@ -91,7 +106,7 @@ export default function ProjectDetailClient({
     return () => {
       cancelled = true
     }
-  }, [slug])
+  }, [effectiveSlug])
 
   return (
     <main className="min-h-screen bg-background">

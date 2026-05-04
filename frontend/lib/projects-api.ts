@@ -19,6 +19,12 @@ export type ApiProjectJson = {
 
 const PLACEHOLDER_COVER = "/placeholder.jpg"
 
+/**
+ * Rota estática extra: HTML usado pelo Laravel quando ainda não existe
+ * `projetos/{slug}.html` para um projeto novo. O cliente lê o slug real na URL.
+ */
+export const PROJECT_CATCH_SHELL_SLUG = "catch-shell"
+
 /** Filament às vezes expõe upload como array no JSON; backend já normaliza, mas reforçamos no cliente. */
 function normalizeCoverUrl(v: unknown): string {
   if (typeof v === "string") return v.trim()
@@ -82,8 +88,8 @@ export async function fetchProjectsAtBuild(): Promise<PortfolioProject[]> {
 export async function fetchProjectSlugsAtBuild(): Promise<string[]> {
   const projects = await fetchProjectsAtBuild()
   const slugs = projects.map((p) => p.slug).filter(Boolean)
-  if (slugs.length) return slugs
-  return [...FALLBACK_SLUGS]
+  const base = slugs.length ? slugs : [...FALLBACK_SLUGS]
+  return [...new Set([...base, PROJECT_CATCH_SHELL_SLUG])]
 }
 
 export async function fetchProjectAtBuild(
