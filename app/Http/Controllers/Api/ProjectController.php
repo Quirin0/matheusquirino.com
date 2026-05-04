@@ -64,7 +64,67 @@ class ProjectController extends Controller
             $data['image_url'] = null;
         }
 
+        $data['tags'] = $this->normalizeTagsForApi($data['tags'] ?? null);
+
         return $data;
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function normalizeTagsForApi(mixed $tags): array
+    {
+        if ($tags === null || $tags === '') {
+            return [];
+        }
+
+        if (is_string($tags)) {
+            $trim = trim($tags);
+            if ($trim === '') {
+                return [];
+            }
+            $decoded = json_decode($trim, true);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                return $this->normalizeTagsForApi($decoded);
+            }
+
+            return array_values(array_filter(array_map('trim', explode(',', $trim))));
+        }
+
+        if (is_array($tags)) {
+            $out = [];
+            foreach ($tags as $item) {
+                if (is_string($item) || is_numeric($item)) {
+                    $t = trim((string) $item);
+                    if ($t !== '') {
+                        $out[] = $t;
+                    }
+
+                    continue;
+                }
+                if (! is_array($item)) {
+                    continue;
+                }
+                foreach (['value', 'name', 'label', 'tag'] as $k) {
+                    if (! empty($item[$k]) && is_string($item[$k])) {
+                        $t = trim($item[$k]);
+                        if ($t !== '') {
+                            $out[] = $t;
+                        }
+                        continue 2;
+                    }
+                }
+                foreach ($this->normalizeTagsForApi($item) as $t) {
+                    if ($t !== '') {
+                        $out[] = $t;
+                    }
+                }
+            }
+
+            return $out;
+        }
+
+        return [];
     }
 
     /**

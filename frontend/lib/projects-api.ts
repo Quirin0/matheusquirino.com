@@ -12,7 +12,8 @@ export type ApiProjectJson = {
   image_url?: string | string[] | null
   live_url?: string | null
   github_url?: string | null
-  tags?: string[] | null
+  /** API pode enviar array, string JSON, objeto indexado ou itens `{ value }` (Filament). */
+  tags?: unknown
   featured?: boolean
   order?: number
 }
@@ -40,6 +41,48 @@ function pickExternalUrl(v: unknown): string | null {
   return t.length > 0 ? t : null
 }
 
+/** Alinha tags do banco / Filament com `string[]` usada nos cards. */
+export function normalizeTagsFromApi(raw: unknown): string[] {
+  if (raw == null) return []
+
+  if (typeof raw === "string") {
+    const s = raw.trim()
+    if (!s) return []
+    if (s.startsWith("[") || s.startsWith("{")) {
+      try {
+        return normalizeTagsFromApi(JSON.parse(s) as unknown)
+      } catch {
+        return s.split(",").map((t) => t.trim()).filter(Boolean)
+      }
+    }
+    return s.split(",").map((t) => t.trim()).filter(Boolean)
+  }
+
+  if (Array.isArray(raw)) {
+    const out: string[] = []
+    for (const item of raw) {
+      if (typeof item === "string" || typeof item === "number") {
+        const t = String(item).trim()
+        if (t) out.push(t)
+      } else if (item && typeof item === "object") {
+        const o = item as Record<string, unknown>
+        const v = o.value ?? o.name ?? o.label ?? o.tag
+        if (typeof v === "string" && v.trim()) out.push(v.trim())
+        else if (typeof v === "number") out.push(String(v))
+      }
+    }
+    return out
+  }
+
+  if (typeof raw === "object") {
+    return Object.values(raw as Record<string, unknown>)
+      .filter((v) => v != null && v !== "")
+      .flatMap((v) => normalizeTagsFromApi(v))
+  }
+
+  return []
+}
+
 export function mapApiProjectToPortfolio(p: ApiProjectJson): PortfolioProject {
   const raw = normalizeCoverUrl(p.image_url)
   const coverImage = raw.length > 0 ? raw : PLACEHOLDER_COVER
@@ -49,7 +92,7 @@ export function mapApiProjectToPortfolio(p: ApiProjectJson): PortfolioProject {
     description: p.description,
     fullDescription: p.full_description ?? "",
     coverImage,
-    tags: Array.isArray(p.tags) ? p.tags : [],
+    tags: normalizeTagsFromApi(p.tags),
     featured: Boolean(p.featured),
     order: typeof p.order === "number" ? p.order : 0,
     liveUrl: pickExternalUrl(p.live_url),
