@@ -9,7 +9,9 @@ export type ApiProjectJson = {
   title: string
   description: string
   full_description?: string | null
-  image_url?: string | null
+  image_url?: string | string[] | null
+  live_url?: string | null
+  github_url?: string | null
   tags?: string[] | null
   featured?: boolean
   order?: number
@@ -17,10 +19,24 @@ export type ApiProjectJson = {
 
 const PLACEHOLDER_COVER = "/placeholder.jpg"
 
+/** Filament às vezes expõe upload como array no JSON; backend já normaliza, mas reforçamos no cliente. */
+function normalizeCoverUrl(v: unknown): string {
+  if (typeof v === "string") return v.trim()
+  if (Array.isArray(v) && v.length > 0 && typeof v[0] === "string") {
+    return v[0].trim()
+  }
+  return ""
+}
+
+function pickExternalUrl(v: unknown): string | null {
+  if (typeof v !== "string") return null
+  const t = v.trim()
+  return t.length > 0 ? t : null
+}
+
 export function mapApiProjectToPortfolio(p: ApiProjectJson): PortfolioProject {
-  const raw = (p.image_url || "").trim()
-  const coverImage =
-    raw.length > 0 ? raw : PLACEHOLDER_COVER
+  const raw = normalizeCoverUrl(p.image_url)
+  const coverImage = raw.length > 0 ? raw : PLACEHOLDER_COVER
   return {
     slug: p.slug,
     title: p.title,
@@ -30,6 +46,8 @@ export function mapApiProjectToPortfolio(p: ApiProjectJson): PortfolioProject {
     tags: Array.isArray(p.tags) ? p.tags : [],
     featured: Boolean(p.featured),
     order: typeof p.order === "number" ? p.order : 0,
+    liveUrl: pickExternalUrl(p.live_url),
+    githubUrl: pickExternalUrl(p.github_url),
   }
 }
 

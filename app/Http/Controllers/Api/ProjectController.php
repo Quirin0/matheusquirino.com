@@ -53,17 +53,37 @@ class ProjectController extends Controller
         $data = $project->toArray();
         $img  = $data['image_url'] ?? null;
 
+        if (is_array($img)) {
+            $img = ! empty($img) ? (string) reset($img) : null;
+            $data['image_url'] = $img;
+        }
+
         if (! empty($img) && is_string($img)) {
-            if (! str_starts_with($img, 'http://') && ! str_starts_with($img, 'https://')) {
-                if (str_starts_with($img, '/')) {
-                    // Caminho já público (legado / CDN)
-                } else {
-                    $data['image_url'] = Storage::disk('public')->url($img);
-                }
-            }
+            $data['image_url'] = $this->absoluteAssetUrl($img);
+        } else {
+            $data['image_url'] = null;
         }
 
         return $data;
+    }
+
+    /**
+     * URL absoluta para o front (Next/Image e SPA em subpastas não quebram).
+     */
+    private function absoluteAssetUrl(string $path): string
+    {
+        $path = trim($path);
+        if ($path === '') {
+            return $path;
+        }
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+        if (str_starts_with($path, '/')) {
+            return url($path);
+        }
+
+        return url(Storage::disk('public')->url($path));
     }
 
     public function update(Request $request, Project $project): JsonResponse

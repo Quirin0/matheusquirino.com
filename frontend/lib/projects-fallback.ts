@@ -23,6 +23,8 @@ Principais funcionalidades implementadas:
     tags: ["Laravel", "React", "MySQL", "Stripe"],
     featured: true,
     order: 1,
+    liveUrl: null,
+    githubUrl: null,
   },
   {
     slug: "task-manager-app",
@@ -45,6 +47,8 @@ Principais funcionalidades implementadas:
     tags: ["React", "Node.js", "MongoDB", "Socket.io"],
     featured: true,
     order: 2,
+    liveUrl: null,
+    githubUrl: null,
   },
   {
     slug: "blog-cms",
@@ -68,6 +72,8 @@ Principais funcionalidades implementadas:
     tags: ["PHP", "MySQL", "JavaScript", "TinyMCE"],
     featured: false,
     order: 3,
+    liveUrl: null,
+    githubUrl: null,
   },
   {
     slug: "api-restful",
@@ -91,6 +97,8 @@ Principais funcionalidades implementadas:
     tags: ["Laravel", "Docker", "Redis", "Swagger"],
     featured: false,
     order: 4,
+    liveUrl: null,
+    githubUrl: null,
   },
 ]
 

@@ -5,6 +5,7 @@ import { Github, Linkedin, Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useSiteConfig } from "@/hooks/use-site-config"
 import { useTypewriter } from "@/hooks/use-typewriter"
+import { mailtoHref, publicContactEmail } from "@/lib/contact-utils"
 
 export function HeroSection() {
   const config = useSiteConfig()
@@ -16,6 +17,7 @@ export function HeroSection() {
   const githubUrl       = s["social.github"]           || "https://github.com"
   const linkedinUrl     = s["social.linkedin"]         || "https://linkedin.com"
   const profilePhoto    = s["site.profile_photo"]      || "/images/1632870446247.jpeg"
+  const mailHref        = mailtoHref(publicContactEmail(s))
 
   const fullText = heroName.endsWith("_") ? heroName.slice(0, -1) : heroName
   const { displayed, cursorVisible, triggerRef } = useTypewriter(fullText, { speed: 90, keepCursor: true })
@@ -97,7 +99,7 @@ export function HeroSection() {
                   className="rounded-full border-border hover:border-primary hover:bg-primary/10 transition-all duration-300 bg-transparent h-9 w-9 text-foreground animate-pulse-subtle"
                   asChild
                 >
-                  <a href="#contato" aria-label="Email">
+                  <a href={mailHref || "#contato"} aria-label="E-mail">
                     <Mail className="h-4 w-4" />
                   </a>
                 </Button>

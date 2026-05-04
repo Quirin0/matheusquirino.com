@@ -1,45 +1,11 @@
 import { notFound } from "next/navigation"
-import Image from "next/image"
-import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Navbar } from "@/components/navbar"
-import { ContactSection } from "@/components/contact-section"
-import { Footer } from "@/components/footer"
-import { WhatsAppButton } from "@/components/whatsapp-button"
+import ProjectDetailClient from "@/components/project-detail-client"
 import {
   fetchProjectAtBuild,
   fetchProjectsAtBuild,
   fetchProjectSlugsAtBuild,
   fallbackProjectBySlug,
 } from "@/lib/projects-api"
-
-function ProjectDescription({ body }: { body: string }) {
-  const trimmed = body.trim()
-  const looksHtml = /<[a-z][\s\S]*>/i.test(trimmed)
-
-  if (looksHtml) {
-    return (
-      <div
-        className="prose prose-invert prose-sm md:prose-base max-w-none text-muted-foreground [&_a]:text-primary [&_img]:rounded-lg"
-        dangerouslySetInnerHTML={{ __html: trimmed }}
-      />
-    )
-  }
-
-  return (
-    <>
-      {trimmed.split("\n\n").map((paragraph, index) => (
-        <p
-          key={index}
-          className="text-muted-foreground leading-relaxed mb-4 last:mb-0"
-        >
-          {paragraph}
-        </p>
-      ))}
-    </>
-  )
-}
 
 export async function generateStaticParams() {
   const slugs = await fetchProjectSlugsAtBuild()
@@ -73,114 +39,22 @@ export default async function ProjectPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const project =
+  const initial =
     (await fetchProjectAtBuild(id)) ?? fallbackProjectBySlug(id)
 
-  if (!project) {
+  if (!initial) {
     notFound()
   }
 
-  const allProjects = await fetchProjectsAtBuild()
-  const otherProjects = allProjects.filter((p) => p.slug !== project.slug)
+  const initialOthers = (await fetchProjectsAtBuild()).filter(
+    (p) => p.slug !== initial.slug
+  )
 
   return (
-    <main className="min-h-screen bg-background">
-      <Navbar />
-
-      <article className="pt-24 pb-16">
-        <div className="max-w-5xl mx-auto px-6 md:px-8 lg:px-12">
-          <Link href="/#projetos">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="mb-8 text-muted-foreground hover:text-foreground transition-colors"
-            >
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Voltar aos projetos
-            </Button>
-          </Link>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-2">
-              <div className="relative aspect-video bg-card rounded-2xl overflow-hidden border border-border mb-8">
-                <Image
-                  src={project.coverImage}
-                  alt={project.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 66vw"
-                  priority
-                />
-              </div>
-
-              <div className="mb-6">
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 bg-primary/10 text-primary text-xs rounded-full"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                  {project.title}
-                </h1>
-                <p className="text-muted-foreground text-lg">
-                  {project.description}
-                </p>
-              </div>
-
-              <div className="prose prose-invert max-w-none">
-                <div className="bg-card rounded-xl border border-border p-6 md:p-8">
-                  <ProjectDescription body={project.fullDescription} />
-                </div>
-              </div>
-            </div>
-
-            <aside className="lg:col-span-1">
-              <div className="sticky top-24">
-                <h3 className="text-lg font-semibold text-foreground mb-4">
-                  Outros <span className="text-primary">Projetos</span>
-                </h3>
-                <div className="space-y-4" style={{ display: "inline-grid" }}>
-                  {otherProjects.map((otherProject) => (
-                    <Link
-                      key={otherProject.slug}
-                      href={`/projetos/${otherProject.slug}`}
-                    >
-                      <div className="group flex gap-4 px-4 py-5 bg-card rounded-xl border border-border hover:border-primary/40 transition-all duration-300 cursor-pointer">
-                        <div className="relative w-16 h-16 flex-shrink-0 bg-secondary rounded-lg overflow-hidden self-center">
-                          <Image
-                            src={otherProject.coverImage}
-                            alt={otherProject.title}
-                            fill
-                            className="object-cover"
-                            sizes="64px"
-                          />
-                        </div>
-                        <div className="flex-1 min-w-0 flex flex-col justify-center gap-1.5">
-                          <h4 className="text-sm font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1">
-                            {otherProject.title}
-                          </h4>
-                          <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
-                            {otherProject.description}
-                          </p>
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </aside>
-          </div>
-        </div>
-      </article>
-
-      <ContactSection />
-      <Footer />
-      <WhatsAppButton />
-    </main>
+    <ProjectDetailClient
+      slug={id}
+      initialProject={initial}
+      initialOthers={initialOthers}
+    />
   )
 }

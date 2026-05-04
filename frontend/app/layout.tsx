@@ -1,12 +1,9 @@
 import React from "react"
 import type { Metadata, Viewport } from 'next'
-import { Inter, Fira_Code } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { Toaster } from '@/components/ui/toaster'
+import { SiteMeta } from '@/components/site-meta'
 import './globals.css'
-
-const _inter = Inter({ subsets: ["latin"] });
-const _firaCode = Fira_Code({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: 'Dev Portfolio | Desenvolvedor Fullstack Júnior',
@@ -45,6 +42,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="scroll-smooth">
       <body className={`font-sans antialiased bg-background text-foreground`}>
+        <SiteMeta />
         {children}
         <Toaster />
         <Analytics />

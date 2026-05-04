@@ -7,4 +7,6 @@ export type PortfolioProject = {
   tags: string[]
   featured: boolean
   order: number
+  liveUrl: string | null
+  githubUrl: string | null
 }
