@@ -1,6 +1,6 @@
 <IfModule mod_rewrite.c>
-    
     RewriteEngine On
+    # DocumentRoot na pasta do repositório: encaminha para Laravel sem expor "/public/" na URL do navegador
     RewriteCond %{REQUEST_URI} !^/public/
-    RewriteRule ^(.*)$ /public/$1 [L,QSA]
+    RewriteRule ^(.*)$ public/$1 [L,QSA]
 </IfModule>

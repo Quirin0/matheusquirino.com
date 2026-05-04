@@ -13,8 +13,8 @@
     RewriteCond %{HTTP:x-xsrf-token} .
     RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
 
-    # Redirect root to Next.js frontend
-    RewriteRule ^$ /frontend [L,R=302]
+    # Home = SPA Next (sem redirect externo — evita URLs estranhas / encadeamento com rewrite da raiz)
+    RewriteRule ^$ frontend/index.html [L]
 
     # Serve Next.js static frontend files directly (bypass Laravel)
     RewriteCond %{REQUEST_URI} ^/frontend

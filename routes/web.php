@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
-// Redireciona raiz para o frontend Next.js
-Route::get('/', fn () => redirect('/frontend'));
+// Página inicial = export estático do Next (sem redirect para /frontend na barra de endereço)
+Route::get('/', fn () => response()->file(public_path('frontend/index.html')));
 
 // Serve a página inicial do frontend
 Route::get('/frontend', fn () => response()->file(public_path('frontend/index.html')));
