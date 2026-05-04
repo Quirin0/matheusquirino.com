@@ -1,6 +1,7 @@
 "use client"
 
 import { useSearchParams } from "next/navigation"
+import Image from "next/image"
 
 import { useState, useMemo } from "react"
 import Link from "next/link"
@@ -134,13 +135,15 @@ export default function ProjectsPage() {
                     style={{ animationDelay: `${index * 50}ms` }}
                   >
                     {/* Project Image */}
-                    <div className="relative h-32 bg-secondary overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                        <span className="text-3xl font-bold text-primary/30">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                      </div>
-                      <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent" />
+                    <div className="relative bg-secondary overflow-hidden" style={{ height: "calc(var(--spacing) * 60)" }}>
+                      <Image
+                        src={project.image}
+                        alt={project.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                        sizes="(max-width: 640px) 100vw, 400px"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent pointer-events-none" />
                     </div>
 
                     <div className="p-4">

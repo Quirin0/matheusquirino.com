@@ -1,6 +1,9 @@
 *.log
 .DS_Store
+
+# Secrets — nunca commitar
 .env
+.env.local
 .env.backup
 .env.production
 .phpactor.json
@@ -25,7 +28,9 @@
 /frontend/.next
 /storage/*.key
 /storage/pail
+# Composer / dependências PHP
 /vendor
+vendor/
 Homestead.json
 Homestead.yaml
 Thumbs.db

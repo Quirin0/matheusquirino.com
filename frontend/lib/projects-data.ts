@@ -16,7 +16,7 @@ Principais funcionalidades implementadas:
 - Painel administrativo para gestao de produtos e pedidos
 - Notificacoes por email transacionais
 - Sistema de avaliacoes e reviews`,
-    image: "/images/projects/ecommerce.jpg",
+    image: "/images/1632870446247.jpeg",
     tags: ["Laravel", "React", "MySQL", "Stripe"],
   },
   {
@@ -36,7 +36,7 @@ Principais funcionalidades implementadas:
 - Filtros e busca avancada
 - Modo escuro e claro
 - Sincronizacao entre dispositivos`,
-    image: "/images/projects/taskmanager.jpg",
+    image: "/images/1632870446247.jpeg",
     tags: ["React", "Node.js", "MongoDB", "Socket.io"],
   },
   {
@@ -57,7 +57,7 @@ Principais funcionalidades implementadas:
 - Sistema de comentarios moderados
 - Analytics integrado
 - Multiplos autores com niveis de permissao`,
-    image: "/images/projects/blogcms.jpg",
+    image: "/images/1632870446247.jpeg",
     tags: ["PHP", "MySQL", "JavaScript", "TinyMCE"],
   },
   {
@@ -78,7 +78,7 @@ Principais funcionalidades implementadas:
 - Logs e monitoramento
 - Testes automatizados com cobertura completa
 - Deploy automatizado com Docker`,
-    image: "/images/projects/api.jpg",
+    image: "/images/1632870446247.jpeg",
     tags: ["Laravel", "Docker", "Redis", "Swagger"],
   },
 ]

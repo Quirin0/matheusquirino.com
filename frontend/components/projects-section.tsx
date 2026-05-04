@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { useEffect, useRef, useState } from "react"
 import { projects, type Project } from "@/lib/projects-data"
+import { useTypewriter } from "@/hooks/use-typewriter"
 
 function ProjectCard({
   project,
@@ -44,13 +45,15 @@ function ProjectCard({
         style={{ transitionDelay: `${index * 100}ms` }}
       >
         {/* Project Image */}
-        <div className="relative h-32 bg-secondary overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-            <span className="text-3xl font-bold text-primary/30">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-          </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent" />
+        <div className="relative bg-secondary overflow-hidden" style={{ height: "calc(var(--spacing) * 60)" }}>
+          <Image
+            src={project.image}
+            alt={project.title}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+            sizes="(max-width: 640px) 100vw, 400px"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-card/80 via-transparent to-transparent pointer-events-none" />
         </div>
 
         <div className="p-4">
@@ -81,12 +84,14 @@ function ProjectCard({
 }
 
 export function ProjectsSection() {
+  const { displayed, cursorVisible, triggerRef } = useTypewriter("<Projetos />")
+
   return (
-    <section id="projetos" className="py-16 md:py-24">
+    <section ref={triggerRef} id="projetos" className="py-16 md:py-24">
       <div className="max-w-4xl mx-auto px-6 md:px-8 lg:px-12">
         <div className="text-center mb-10">
           <span className="inline-block px-4 py-1.5 mb-4 text-xs font-mono bg-card border border-border rounded-full text-muted-foreground">
-            {"<Projetos />"}
+            {displayed}<span style={{ opacity: cursorVisible ? 1 : 0 }}>_</span>
           </span>
           <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
             Projetos em <span className="text-primary">Destaque</span>
@@ -104,8 +109,8 @@ export function ProjectsSection() {
 
         <div className="flex justify-center mt-8">
           <Button
-            variant="outline"
-            className="rounded-full px-6 border-border hover:border-primary hover:bg-primary/10 transition-all duration-300 bg-transparent text-foreground"
+            size="default"
+            className="rounded-full px-6 bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300 animate-pulse-subtle"
             asChild
           >
             <Link href="/projetos">Ver Todos os Projetos</Link>

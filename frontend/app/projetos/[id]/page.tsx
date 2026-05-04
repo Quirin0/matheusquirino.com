@@ -76,11 +76,14 @@ export default async function ProjectPage({
             <div className="lg:col-span-2">
               {/* Project Image */}
               <div className="relative aspect-video bg-card rounded-2xl overflow-hidden border border-border mb-8">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                  <span className="text-6xl font-bold text-primary/20">
-                    {project.title.charAt(0)}
-                  </span>
-                </div>
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 66vw"
+                  priority
+                />
               </div>
 
               {/* Project Title */}
@@ -124,27 +127,29 @@ export default async function ProjectPage({
                 <h3 className="text-lg font-semibold text-foreground mb-4">
                   Outros <span className="text-primary">Projetos</span>
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-4" style={{ display: "inline-grid" }}>
                   {otherProjects.map((otherProject) => (
                     <Link
                       key={otherProject.id}
                       href={`/projetos/${otherProject.id}`}
                     >
-                      <div className="group flex gap-3 p-3 bg-card rounded-xl border border-border hover:border-primary/40 transition-all duration-300 cursor-pointer">
+                      <div className="group flex gap-4 px-4 py-5 bg-card rounded-xl border border-border hover:border-primary/40 transition-all duration-300 cursor-pointer">
                         {/* Mini Image */}
-                        <div className="relative w-16 h-16 flex-shrink-0 bg-secondary rounded-lg overflow-hidden">
-                          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-                            <span className="text-lg font-bold text-primary/40">
-                              {otherProject.title.charAt(0)}
-                            </span>
-                          </div>
+                        <div className="relative w-16 h-16 flex-shrink-0 bg-secondary rounded-lg overflow-hidden self-center">
+                          <Image
+                            src={otherProject.image}
+                            alt={otherProject.title}
+                            fill
+                            className="object-cover"
+                            sizes="64px"
+                          />
                         </div>
                         {/* Info */}
-                        <div className="flex-1 min-w-0">
+                        <div className="flex-1 min-w-0 flex flex-col justify-center gap-1.5">
                           <h4 className="text-sm font-medium text-foreground group-hover:text-primary transition-colors line-clamp-1">
                             {otherProject.title}
                           </h4>
-                          <p className="text-xs text-muted-foreground line-clamp-2 mt-1">
+                          <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
                             {otherProject.description}
                           </p>
                         </div>
